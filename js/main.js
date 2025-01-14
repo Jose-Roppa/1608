@@ -1,8 +1,7 @@
 // Configuração do Spotify
 const spotifyEmbed = document.getElementById('spotify-embed');
-
-// Substitua PLAYLIST_ID pela ID da sua playlist no Spotify
 const playlistId = '3tydOrCoNFDbwSwMd2Tmwj';
+
 spotifyEmbed.innerHTML = `
     <iframe
         src="https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator"
@@ -16,76 +15,120 @@ spotifyEmbed.innerHTML = `
 
 // Gerenciamento da Galeria de Fotos
 const photoGallery = document.getElementById('photo-gallery');
+const prevButton = document.getElementById('prev-photo');
+const nextButton = document.getElementById('next-photo');
 
 // Array com as fotos
 const photos = [
     {
         url: 'assets/images/IMG_8616.JPG',
-        description: 'Momentos Especiais'
+        description: 'I want'
     },
     {
         url: 'assets/images/IMG_8734.JPG',
-        description: 'Nossos Sorrisos'
+        description: 'to wear his initial'
     },
     {
         url: 'assets/images/IMG_8744.JPG',
-        description: 'Juntos'
+        description: 'On a chain'
     },
     {
         url: 'assets/images/IMG_8834.JPG',
-        description: 'Nosso Amor'
+        description: '\'round my neck'
     },
     {
         url: 'assets/images/IMG_9102.JPG',
-        description: 'Momentos Felizes'
+        description: 'Not because'
     },
     {
         url: 'assets/images/IMG_8575.JPG',
-        description: 'Nossos Dias'
+        description: 'he owns me'
     },
     {
         url: 'assets/images/IMG_8607.JPG',
-        description: 'Memórias Especiais'
+        description: 'But \'cause he'
     },
     {
         url: 'assets/images/IMG_8753.JPG',
-        description: 'Nossa História'
+        description: 'really knows me ❤️'
+    },
+    {
+        url: 'assets/images/IMG_9067.HEIC',
+        description: ''
+    },
+    {
+        url: 'assets/images/IMG_8835.JPG',
+        description: ''
+    },
+    {
+        url: 'assets/images/IMG_8836.JPG',
+        description: ''
+    },
+    {
+        url: 'assets/images/IMG_8837.JPG',
+        description: ''
     }
 ];
 
+let currentPhotoIndex = 0;
+
 // Função para criar elementos da galeria
 function createGalleryItems() {
-    photos.forEach(photo => {
+    photoGallery.innerHTML = '';
+    photos.forEach((photo, index) => {
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
+        if (index === currentPhotoIndex) {
+            galleryItem.classList.add('active');
+        }
+        
+        const descriptionHtml = photo.description ? `<div class="photo-description"><h3>${photo.description}</h3></div>` : '';
         
         galleryItem.innerHTML = `
-            <img src="${photo.url}" alt="${photo.description}" loading="lazy">
-            <div class="photo-description">${photo.description}</div>
+            <img src="${photo.url}" alt="${photo.description || 'Nosso momento'}" loading="lazy">
+            ${descriptionHtml}
         `;
         
         photoGallery.appendChild(galleryItem);
     });
 }
 
+// Navegação da galeria
+function navigateGallery(direction) {
+    const items = document.querySelectorAll('.gallery-item');
+    items[currentPhotoIndex].classList.remove('active');
+    
+    currentPhotoIndex = (currentPhotoIndex + direction + photos.length) % photos.length;
+    items[currentPhotoIndex].classList.add('active');
+}
+
+// Adiciona eventos de teclado para navegação
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+        navigateGallery(-1);
+    } else if (e.key === 'ArrowRight') {
+        navigateGallery(1);
+    }
+});
+
+prevButton.addEventListener('click', () => navigateGallery(-1));
+nextButton.addEventListener('click', () => navigateGallery(1));
+
 // Timeline de eventos
 const timelineContainer = document.querySelector('.timeline-container');
 
 const timelineEvents = [
     {
-        date: '14 de Janeiro',
+        date: '30 de Abril',
         title: 'Nosso Primeiro Encontro',
-        description: 'O dia em que tudo começou'
+        description: 'O dia em que tudo começou',
+        icon: 'fa-heart'
     },
     {
-        date: '14 de Fevereiro',
-        title: 'Primeiro Beijo',
-        description: 'Um momento mágico'
-    },
-    {
-        date: '14 de Março',
+        date: '16 de Agosto',
         title: 'Namoro Oficial',
-        description: 'O início da nossa história'
+        description: 'O início da nossa história',
+        icon: 'fa-ring'
     }
 ];
 
@@ -97,6 +140,9 @@ function createTimelineEvents() {
         
         eventElement.innerHTML = `
             <div class="event-content">
+                <div class="event-icon">
+                    <i class="fas ${event.icon}"></i>
+                </div>
                 <h3>${event.title}</h3>
                 <p class="event-date">${event.date}</p>
                 <p>${event.description}</p>
@@ -107,15 +153,36 @@ function createTimelineEvents() {
     });
 }
 
-// Inicialização
-document.addEventListener('DOMContentLoaded', () => {
-    createGalleryItems();
-    createTimelineEvents();
+// Navegação suave
+document.querySelectorAll('.nav-btn').forEach(button => {
+    button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = button.getAttribute('data-section');
+        const targetSection = document.getElementById(targetId);
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+    });
 });
 
-// Animação suave ao rolar
+// Animação de corações flutuantes
+function createFloatingHeart() {
+    const heart = document.createElement('div');
+    heart.className = 'floating-heart';
+    heart.innerHTML = '❤️';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+    document.querySelector('.floating-hearts').appendChild(heart);
+    
+    setTimeout(() => {
+        heart.remove();
+    }, 5000);
+}
+
+// Criar corações a cada 3 segundos
+setInterval(createFloatingHeart, 3000);
+
+// Animação ao rolar
 function revealOnScroll() {
-    const elements = document.querySelectorAll('.gallery-item, .timeline-event');
+    const elements = document.querySelectorAll('.gallery-item, .timeline-event, .section-content');
     
     elements.forEach(element => {
         const elementTop = element.getBoundingClientRect().top;
@@ -126,5 +193,12 @@ function revealOnScroll() {
         }
     });
 }
+
+// Inicialização
+document.addEventListener('DOMContentLoaded', () => {
+    createGalleryItems();
+    createTimelineEvents();
+    createFloatingHeart();
+});
 
 window.addEventListener('scroll', revealOnScroll); 

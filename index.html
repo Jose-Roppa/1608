@@ -8,32 +8,81 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <div class="floating-hearts"></div>
+    
     <header class="header">
         <h1>Nossa História</h1>
         <p class="subtitle">Um amor que cresce a cada dia</p>
+        <div class="heart-animation">❤️</div>
     </header>
 
-    <section class="spotify-player">
-        <h2>Nossa Playlist</h2>
-        <div id="spotify-embed"></div>
-    </section>
+    <nav class="navigation">
+        <button class="nav-btn" data-section="spotify-player">
+            <i class="fas fa-music"></i> Nossa Música
+        </button>
+        <button class="nav-btn" data-section="gallery">
+            <i class="fas fa-images"></i> Memórias
+        </button>
+        <button class="nav-btn" data-section="timeline">
+            <i class="fas fa-clock"></i> Nossa História
+        </button>
+    </nav>
 
-    <section class="gallery">
-        <h2>Momentos Especiais</h2>
-        <div class="gallery-grid" id="photo-gallery">
-            <!-- As fotos serão adicionadas aqui via JavaScript -->
+    <section class="spotify-player" id="spotify-player">
+        <h2><i class="fas fa-music"></i> Nossa Playlist</h2>
+        <div class="section-content">
+            <div id="spotify-embed"></div>
         </div>
     </section>
 
-    <section class="timeline">
-        <h2>Nossa Linha do Tempo</h2>
-        <div class="timeline-container">
-            <!-- Eventos da timeline serão adicionados aqui -->
+    <section class="gallery" id="gallery">
+        <h2><i class="fas fa-images"></i> Momentos Especiais</h2>
+        <div class="section-content">
+            <div class="gallery-controls">
+                <button class="gallery-btn" id="prev-photo" title="Foto anterior">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="gallery-btn" id="next-photo" title="Próxima foto">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div class="gallery-grid" id="photo-gallery">
+                <!-- As fotos serão adicionadas aqui via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <section class="timeline" id="timeline">
+        <h2><i class="fas fa-clock"></i> Nossa Linha do Tempo</h2>
+        <div class="section-content">
+            <div class="timeline-container">
+                <!-- Eventos da timeline serão adicionados aqui -->
+            </div>
+        </div>
+    </section>
+
+    <section class="message">
+        <h2><i class="fas fa-heart"></i> Mensagem Especial</h2>
+        <div class="section-content">
+            <div class="love-letter">
+                <p class="love-text">
+                    Cada momento ao seu lado é especial. Você traz cor e alegria para minha vida.
+                    Este é apenas um pequeno gesto para mostrar o quanto você significa para mim.
+                </p>
+                <div class="signature">Com todo meu amor ❤️</div>
+            </div>
         </div>
     </section>
 
     <footer>
-        <p>Feito com ❤️ para você</p>
+        <div class="footer-content">
+            <p>Feito com <i class="fas fa-heart"></i> para você</p>
+            <div class="footer-hearts">
+                <span>❤️</span>
+                <span>❤️</span>
+                <span>❤️</span>
+            </div>
+        </div>
     </footer>
 
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
