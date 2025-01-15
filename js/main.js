@@ -206,20 +206,33 @@ function updateNavigationButtons(currentIndex, totalGroups) {
     nextButton.style.pointerEvents = currentIndex === totalGroups - 1 ? 'none' : 'auto';
 }
 
-// Função para criar elementos da galeria
-function getItemsPerGroup() {
-    return 8; // Mantém 4x2 grid em todos os dispositivos
+function setupNavigationButtons(controls, totalGroups) {
+    const prevButton = controls.querySelector('#prev-photo');
+    const nextButton = controls.querySelector('#next-photo');
+
+    if (prevButton && nextButton) {
+        prevButton.addEventListener('click', () => navigateGallery(-1));
+        nextButton.addEventListener('click', () => navigateGallery(1));
+    }
+
+    // Mostra os controles
+    setTimeout(() => {
+        controls.classList.add('loaded');
+        updateNavigationButtons(currentPhotoIndex, totalGroups);
+    }, 500);
 }
 
+// Função para criar elementos da galeria
 function createGalleryItems() {
+    const photoGallery = document.getElementById('photo-gallery');
     photoGallery.innerHTML = '';
     
     // Cria o container principal
     const container = document.createElement('div');
     container.className = 'gallery-container';
     
-    // Calcula quantos grupos de fotos teremos
-    const itemsPerGroup = getItemsPerGroup();
+    // Define número fixo de itens por grupo (4x2 = 8)
+    const itemsPerGroup = 8;
     const totalGroups = Math.ceil(photos.length / itemsPerGroup);
     
     // Cria os grupos de fotos
@@ -231,6 +244,7 @@ function createGalleryItems() {
         const startIndex = groupIndex * itemsPerGroup;
         const endIndex = Math.min(startIndex + itemsPerGroup, photos.length);
         
+        // Preenche as fotos existentes
         for (let i = startIndex; i < endIndex; i++) {
             const photo = photos[i];
             const galleryItem = document.createElement('div');
@@ -248,13 +262,11 @@ function createGalleryItems() {
         }
         
         // Preenche espaços vazios no último grupo se necessário
-        if (endIndex - startIndex < itemsPerGroup) {
-            const emptySpaces = itemsPerGroup - (endIndex - startIndex);
-            for (let i = 0; i < emptySpaces; i++) {
-                const emptyItem = document.createElement('div');
-                emptyItem.className = 'gallery-item empty';
-                groupDiv.appendChild(emptyItem);
-            }
+        const emptySpaces = itemsPerGroup - (endIndex - startIndex);
+        for (let i = 0; i < emptySpaces; i++) {
+            const emptyItem = document.createElement('div');
+            emptyItem.className = 'gallery-item empty';
+            groupDiv.appendChild(emptyItem);
         }
         
         container.appendChild(groupDiv);
@@ -275,20 +287,13 @@ function createGalleryItems() {
     `;
     photoGallery.appendChild(controls);
 
-    // Adiciona os event listeners
-    const prevButton = controls.querySelector('#prev-photo');
-    const nextButton = controls.querySelector('#next-photo');
+    // Configuração dos botões de navegação
+    setupNavigationButtons(controls, totalGroups);
+}
 
-    if (prevButton && nextButton) {
-        prevButton.addEventListener('click', () => navigateGallery(-1));
-        nextButton.addEventListener('click', () => navigateGallery(1));
-    }
-
-    // Mostra os controles
-    setTimeout(() => {
-        controls.classList.add('loaded');
-        updateNavigationButtons(currentPhotoIndex, totalGroups);
-    }, 500);
+// Função para obter número de itens por grupo
+function getItemsPerGroup() {
+    return 8; // Mantém 4x2 grid em todos os dispositivos
 }
 
 // Adiciona eventos de teclado para navegação
