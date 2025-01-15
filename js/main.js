@@ -21,11 +21,11 @@ const nextButton = document.getElementById('next-photo');
 // Array com as fotos
 const photos = [
     {
-        url: 'assets/images/IMG_9160.PNG',
+        url: 'assets/images/IMG_9161.PNG',
         description: 'I want'
     },
     {
-        url: 'assets/images/IMG_9161.PNG',
+        url: 'assets/images/IMG_9160.PNG',
         description: 'to wear his initial'
     },
     {
@@ -117,7 +117,7 @@ function touchMove(event) {
     const diff = currentX - touchStartX;
     const galleryWidth = photoGallery.offsetWidth;
     const totalPhotos = photos.length;
-    const itemsPerGroup = window.innerWidth <= 768 ? 4 : 8;
+    const itemsPerGroup = getItemsPerGroup();
     const totalGroups = Math.ceil(totalPhotos / itemsPerGroup);
     
     // Calcula os limites do arrasto
@@ -148,7 +148,7 @@ function touchEnd() {
     
     const galleryWidth = photoGallery.offsetWidth;
     const totalPhotos = photos.length;
-    const itemsPerGroup = window.innerWidth <= 768 ? 4 : 8;
+    const itemsPerGroup = getItemsPerGroup();
     const totalGroups = Math.ceil(totalPhotos / itemsPerGroup);
     
     // Calcula a direção do swipe
@@ -171,7 +171,7 @@ function navigateGallery(direction) {
     if (!container) return;
 
     const totalPhotos = photos.length;
-    const itemsPerGroup = window.innerWidth <= 768 ? 4 : 8;
+    const itemsPerGroup = getItemsPerGroup();
     const totalGroups = Math.ceil(totalPhotos / itemsPerGroup);
     
     // Atualiza o índice atual
@@ -207,6 +207,16 @@ function updateNavigationButtons(currentIndex, totalGroups) {
 }
 
 // Função para criar elementos da galeria
+function getItemsPerGroup() {
+    if (window.innerWidth <= 600) {
+        return 8; // 2x4 grid no mobile pequeno
+    } else if (window.innerWidth <= 900) {
+        return 9; // 3x3 grid no tablet
+    } else {
+        return 8; // 4x2 grid no desktop
+    }
+}
+
 function createGalleryItems() {
     photoGallery.innerHTML = '';
     
@@ -215,7 +225,7 @@ function createGalleryItems() {
     container.className = 'gallery-container';
     
     // Calcula quantos grupos de fotos teremos
-    const itemsPerGroup = window.innerWidth <= 768 ? 4 : 8;
+    const itemsPerGroup = getItemsPerGroup();
     const totalGroups = Math.ceil(photos.length / itemsPerGroup);
     
     // Cria os grupos de fotos
