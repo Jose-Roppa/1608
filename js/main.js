@@ -53,19 +53,27 @@ const photos = [
         description: 'really knows me ❤️'
     },
     {
+        url: 'assets/images/IMG_8674.JPG',
+        description: ''
+    },
+    {
         url: 'assets/images/IMG_9067.HEIC',
         description: ''
     },
     {
-        url: 'assets/images/IMG_8835.JPG',
+        url: 'assets/images/IMG_9137.HEIC',
         description: ''
     },
     {
-        url: 'assets/images/IMG_8836.JPG',
+        url: 'assets/images/B6351CAE-D495-4DB6-910E-B7E8A3ECDDFC.JPG',
         description: ''
     },
     {
-        url: 'assets/images/IMG_8837.JPG',
+        url: 'assets/images/IMG_8733.JPG',
+        description: ''
+    },
+    {
+        url: 'assets/images/IMG_8275.JPG',
         description: ''
     }
 ];
@@ -74,32 +82,51 @@ let currentPhotoIndex = 0;
 
 // Função para criar elementos da galeria
 function createGalleryItems() {
+    const totalGroups = Math.ceil(photos.length / 8);
     photoGallery.innerHTML = '';
-    photos.forEach((photo, index) => {
-        const galleryItem = document.createElement('div');
-        galleryItem.className = 'gallery-item';
-        if (index === currentPhotoIndex) {
-            galleryItem.classList.add('active');
+    photoGallery.style.height = '420px';
+    
+    for (let groupIndex = 0; groupIndex < totalGroups; groupIndex++) {
+        const container = document.createElement('div');
+        container.className = 'gallery-container';
+        container.style.transform = `translateX(${groupIndex * 100}%)`;
+        container.style.left = '0';
+        
+        const startIndex = groupIndex * 8;
+        const endIndex = Math.min(startIndex + 8, photos.length);
+        
+        for (let i = startIndex; i < endIndex; i++) {
+            const photo = photos[i];
+            const galleryItem = document.createElement('div');
+            galleryItem.className = 'gallery-item';
+            
+            const descriptionHtml = photo.description ? `<div class="photo-description"><h3>${photo.description}</h3></div>` : '';
+            
+            galleryItem.innerHTML = `
+                <img src="${photo.url}" alt="${photo.description || 'Nosso momento'}" loading="lazy">
+                ${descriptionHtml}
+            `;
+            
+            container.appendChild(galleryItem);
         }
         
-        const descriptionHtml = photo.description ? `<div class="photo-description"><h3>${photo.description}</h3></div>` : '';
-        
-        galleryItem.innerHTML = `
-            <img src="${photo.url}" alt="${photo.description || 'Nosso momento'}" loading="lazy">
-            ${descriptionHtml}
-        `;
-        
-        photoGallery.appendChild(galleryItem);
-    });
+        photoGallery.appendChild(container);
+    }
+
+    // Adiciona a classe 'loaded' aos controles após criar a galeria
+    document.querySelector('.gallery-controls').classList.add('loaded');
 }
 
 // Navegação da galeria
 function navigateGallery(direction) {
-    const items = document.querySelectorAll('.gallery-item');
-    items[currentPhotoIndex].classList.remove('active');
+    const containers = photoGallery.querySelectorAll('.gallery-container');
+    const totalGroups = containers.length;
     
-    currentPhotoIndex = (currentPhotoIndex + direction + photos.length) % photos.length;
-    items[currentPhotoIndex].classList.add('active');
+    currentPhotoIndex = Math.max(0, Math.min(currentPhotoIndex + direction, totalGroups - 1));
+    
+    containers.forEach((container, index) => {
+        container.style.transform = `translateX(${(index - currentPhotoIndex) * 100}%)`;
+    });
 }
 
 // Adiciona eventos de teclado para navegação
