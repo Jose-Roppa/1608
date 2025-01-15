@@ -143,18 +143,93 @@ nextButton.addEventListener('click', () => navigateGallery(1));
 
 // Timeline de eventos
 const timelineContainer = document.querySelector('.timeline-container');
+const startDate = new Date('2024-08-16T00:00:00');
+
+function calcularTempoJuntos() {
+    const hoje = new Date();
+    const diff = hoje - startDate;
+    
+    if (diff < 0) {
+        return {
+            anos: 0,
+            meses: 0,
+            dias: 0,
+            futuro: true
+        };
+    }
+
+    let anos = hoje.getFullYear() - startDate.getFullYear();
+    let meses = hoje.getMonth() - startDate.getMonth();
+    let dias = hoje.getDate() - startDate.getDate();
+
+    // Ajuste para meses negativos
+    if (meses < 0) {
+        anos--;
+        meses += 12;
+    }
+    
+    // Ajuste para dias negativos
+    if (dias < 0) {
+        meses--;
+        // Pega o último dia do mês anterior
+        const ultimoDiaMesAnterior = new Date(hoje.getFullYear(), hoje.getMonth(), 0).getDate();
+        dias += ultimoDiaMesAnterior;
+    }
+
+    // Ajuste para meses negativos após ajuste de dias
+    if (meses < 0) {
+        anos--;
+        meses += 12;
+    }
+    
+    return {
+        anos,
+        meses,
+        dias,
+        futuro: false
+    };
+}
+
+function atualizarContador() {
+    const tempo = calcularTempoJuntos();
+    const counterElement = document.getElementById('time-counter');
+    
+    if (tempo.futuro) {
+        counterElement.innerHTML = 'Contagem regressiva para o namoro...';
+        return;
+    }
+    
+    const anosText = tempo.anos > 0 ? `<span>${tempo.anos}</span> ${tempo.anos === 1 ? 'ano' : 'anos'}` : '';
+    const mesesText = tempo.meses > 0 ? `<span>${tempo.meses}</span> ${tempo.meses === 1 ? 'mês' : 'meses'}` : '';
+    const diasText = `<span>${tempo.dias}</span> ${tempo.dias === 1 ? 'dia' : 'dias'}`;
+    
+    const textoCompleto = [anosText, mesesText, diasText]
+        .filter(text => text !== '')
+        .join(', ');
+    
+    counterElement.innerHTML = textoCompleto;
+}
+
+// Atualiza o contador a cada segundo
+setInterval(atualizarContador, 1000);
 
 const timelineEvents = [
     {
-        date: '30 de Abril',
-        title: 'Nosso Primeiro Encontro',
-        description: 'O dia em que tudo começou',
+        date: '6 de Abril de 2024',
+        title: 'Nossa primeira mensagem',
+        description: 'O nascimento do cabrito pelado',
         icon: 'fa-heart'
     },
     {
-        date: '16 de Agosto',
+        date: '30 de Abril de 2024',
+        title: 'Nosso primeiro encontro',
+        description: 'Quando os dois ficaram ansiosos demais para esparar sexta feira',
+        icon: 'fa-heart'
+    },
+    {
+        date: '16 de Agosto de 2024',
         title: 'Namoro Oficial',
-        description: 'O início da nossa história',
+        description: 'O dia mais especial de nossa vida ❤️',
         icon: 'fa-ring'
     }
 ];
@@ -180,52 +255,9 @@ function createTimelineEvents() {
     });
 }
 
-// Navegação suave
-document.querySelectorAll('.nav-btn').forEach(button => {
-    button.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetId = button.getAttribute('data-section');
-        const targetSection = document.getElementById(targetId);
-        targetSection.scrollIntoView({ behavior: 'smooth' });
-    });
-});
-
-// Animação de corações flutuantes
-function createFloatingHeart() {
-    const heart = document.createElement('div');
-    heart.className = 'floating-heart';
-    heart.innerHTML = '❤️';
-    heart.style.left = Math.random() * 100 + 'vw';
-    heart.style.animationDuration = Math.random() * 3 + 2 + 's';
-    document.querySelector('.floating-hearts').appendChild(heart);
-    
-    setTimeout(() => {
-        heart.remove();
-    }, 5000);
-}
-
-// Criar corações a cada 3 segundos
-setInterval(createFloatingHeart, 3000);
-
-// Animação ao rolar
-function revealOnScroll() {
-    const elements = document.querySelectorAll('.gallery-item, .timeline-event, .section-content');
-    
-    elements.forEach(element => {
-        const elementTop = element.getBoundingClientRect().top;
-        const elementVisible = 150;
-        
-        if (elementTop < window.innerHeight - elementVisible) {
-            element.classList.add('active');
-        }
-    });
-}
-
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
     createGalleryItems();
     createTimelineEvents();
-    createFloatingHeart();
-});
-
-window.addEventListener('scroll', revealOnScroll); 
+    atualizarContador(); // Inicializa o contador imediatamente
+}); 

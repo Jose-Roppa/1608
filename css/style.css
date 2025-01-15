@@ -43,7 +43,7 @@ body {
 
 /* Video no Header */
 .header .video-container {
-    max-width: 800px;
+    max-width: 600px;
     margin: 0 auto;
     border-radius: 15px;
     overflow: hidden;
@@ -55,6 +55,7 @@ body {
     display: block;
     width: 100%;
     height: auto;
+    max-height: 400px;
     border-radius: 15px;
     transition: transform 0.3s ease;
 }
@@ -73,6 +74,10 @@ body {
     .header .video-container {
         margin: 0 -0.5rem;
         border-radius: 10px;
+        max-width: 100%;
+    }
+    .header .video-container video {
+        max-height: 300px;
     }
 }
 
@@ -80,7 +85,7 @@ body {
 section {
     padding: 2rem;
     margin: 2rem auto;
-    max-width: 1200px;
+    max-width: 900px;
     background: rgba(255, 255, 255, 0.9);
     border-radius: 20px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -99,9 +104,20 @@ section h2 {
     margin-bottom: 2rem;
 }
 
-/* Spotify Player */
+/* Ajustes específicos */
+section.gallery {
+    padding: 1rem;
+}
+
 .spotify-player {
     padding: 2rem;
+}
+
+@media (max-width: 768px) {
+    section {
+        padding: 1rem;
+        margin: 1rem auto;
+    }
 }
 
 /* Galeria */
@@ -110,7 +126,6 @@ section h2 {
     width: 100%;
     overflow: hidden;
     padding: 0.5rem;
-    max-width: 880px;
     margin: 0 auto;
     min-height: 420px;
 }
@@ -294,6 +309,17 @@ section.gallery h2 {
     margin-bottom: 0.5rem;
 }
 
+.event-content p {
+    white-space: pre-line;
+    line-height: 1.5;
+}
+
+.event-content .days-counter {
+    margin-top: 0.5rem;
+    font-weight: 600;
+    color: #e91e63;
+}
+
 /* Footer */
 footer {
     text-align: center;
@@ -387,33 +413,6 @@ button {
     font: inherit;
 }
 
-/* Manter os estilos específicos para os botões de navegação */
-.nav-btn {
-    background: rgba(233, 30, 99, 0.8);
-    color: white;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: 'Poppins', sans-serif;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    appearance: none !important;
-    text-decoration: none;
-    outline: none;
-    box-shadow: none;
-}
-
-.nav-btn:hover {
-    background: rgba(233, 30, 99, 1);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(233, 30, 99, 0.3);
-}
-
 /* Manter os estilos específicos para os botões da galeria */
 .gallery-btn {
     background: rgba(233, 30, 99, 0.8);
@@ -461,14 +460,12 @@ button {
 /* Seção de Vídeo */
 .video-section {
     padding: 1.5rem;
-    max-width: 900px;
     margin: 0 auto;
 }
 
 .video-container {
     position: relative;
     width: 100%;
-    max-width: 800px;
     margin: 0 auto;
     background: #000;
     border-radius: 15px;
@@ -498,52 +495,165 @@ button {
     }
 }
 
-/* Navegação */
-.navigation {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin: 1rem 0;
+/* Contador */
+.counter-box {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    transition: transform 0.3s ease;
 }
 
-.nav-btn {
-    background: rgba(233, 30, 99, 0.8);
-    color: white;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: 'Poppins', sans-serif;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    text-decoration: none;
-    outline: none;
+.counter-box:hover {
+    transform: scale(1.02);
 }
 
-.nav-btn i {
-    font-size: 1.1rem;
+.counter-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.8rem;
+    color: #e91e63;
+    margin-bottom: 0.5rem;
 }
 
-.nav-btn:hover {
-    background: rgba(233, 30, 99, 1);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(233, 30, 99, 0.3);
+.counter-value {
+    font-size: 1.2rem;
+    color: #666;
+    font-weight: 600;
+    line-height: 1.6;
 }
 
+.counter-value span {
+    color: #e91e63;
+    font-weight: bold;
+}
+
+/* Responsividade Mobile */
 @media (max-width: 768px) {
-    .navigation {
-        flex-direction: column;
-        align-items: center;
+    /* Ajustes gerais */
+    body {
+        font-size: 14px;
+    }
+
+    section {
+        padding: 1rem;
+        margin: 1rem 0.5rem;
+        border-radius: 15px;
+    }
+
+    /* Header */
+    .header {
+        padding: 1rem 0.5rem;
+    }
+
+    .header h1 {
+        font-size: 2.2rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    /* Galeria */
+    .gallery-grid {
+        min-height: 340px;
+    }
+
+    .gallery-container {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(4, 1fr);
         gap: 0.5rem;
     }
-    
-    .nav-btn {
-        width: 80%;
-        justify-content: center;
+
+    .gallery-item {
+        width: 150px;
+        height: 150px;
+    }
+
+    .gallery-controls {
+        left: -10px;
+        right: -10px;
+    }
+
+    .gallery-btn {
+        width: 35px;
+        height: 35px;
+        background: rgba(233, 30, 99, 0.9);
+    }
+
+    /* Timeline */
+    .timeline-container {
+        padding: 1rem 0;
+    }
+
+    .timeline-event {
+        width: 100%;
+        padding-left: 50px;
+        padding-right: 10px;
+    }
+
+    .timeline-event.right {
+        left: 0;
+    }
+
+    .event-content {
+        padding: 1rem;
+    }
+
+    .event-content::after {
+        width: 15px;
+        height: 15px;
+        left: -45px !important;
+    }
+
+    /* Contador */
+    .counter-box {
+        margin: 0 0.5rem 1.5rem;
+        padding: 1rem;
+    }
+
+    .counter-title {
+        font-size: 1.5rem;
+    }
+
+    .counter-value {
+        font-size: 1rem;
+    }
+
+    /* Spotify Player */
+    .spotify-player iframe {
+        height: 300px;
+    }
+
+    /* Footer */
+    footer {
+        margin-top: 2rem;
+        padding: 1.5rem;
+    }
+}
+
+/* Touch Events */
+@media (hover: none) {
+    section:hover {
+        transform: none;
+    }
+
+    .gallery-item:hover {
+        transform: none;
+    }
+
+    .photo-description {
+        transform: translateY(0);
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5), transparent);
+    }
+
+    .event-content:hover {
+        transform: none;
+    }
+
+    .counter-box:hover {
+        transform: none;
     }
 } 
