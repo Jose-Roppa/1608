@@ -127,27 +127,37 @@ section.gallery {
     overflow: hidden;
     padding: 0.5rem;
     margin: 0 auto;
-    min-height: 420px;
+    min-height: 580px;
+    touch-action: pan-x;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .gallery-container {
+    display: flex;
     position: absolute;
+    left: 0;
+    height: 100%;
+    will-change: transform;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gallery-group {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 1rem;
-    transition: transform 0.5s ease;
+    padding: 0.5rem;
     width: 100%;
+    min-width: 100%;
+    flex-shrink: 0;
+    height: 100%;
 }
 
 section.gallery {
     padding: 1rem;
-    max-width: 900px;
+    max-width: 1200px;
     margin: 1rem auto;
-}
-
-section.gallery h2 {
-    margin-bottom: 1rem;
 }
 
 .gallery-item {
@@ -157,9 +167,9 @@ section.gallery h2 {
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    width: 200px;
-    height: 200px;
-    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    max-height: 260px;
 }
 
 .gallery-item:hover {
@@ -176,12 +186,13 @@ section.gallery h2 {
 .gallery-controls {
     position: absolute;
     top: 50%;
-    left: -20px;
-    right: -20px;
+    left: 0;
+    right: 0;
     transform: translateY(-50%);
     z-index: 10;
     display: none;
     justify-content: space-between;
+    padding: 0 1rem;
     pointer-events: none;
 }
 
@@ -202,11 +213,29 @@ section.gallery h2 {
     align-items: center;
     justify-content: center;
     pointer-events: auto;
+    font-size: 1.5rem;
+    z-index: 20;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+}
+
+.gallery-controls.loaded .gallery-btn {
+    opacity: 1;
+    visibility: visible;
 }
 
 .gallery-btn:hover {
     background: rgba(233, 30, 99, 1);
     transform: scale(1.1);
+}
+
+.gallery-btn:disabled,
+.gallery-btn[style*="pointer-events: none"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
 }
 
 .photo-description {
@@ -427,6 +456,15 @@ button {
     align-items: center;
     justify-content: center;
     pointer-events: auto;
+    font-size: 1.5rem;
+    z-index: 20;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+.gallery-controls.loaded .gallery-btn {
+    opacity: 1;
+    visibility: visible;
 }
 
 .gallery-btn:hover {
@@ -434,26 +472,36 @@ button {
     transform: scale(1.1);
 }
 
+.gallery-btn:disabled,
+.gallery-btn[style*="pointer-events: none"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
 @media (max-width: 1024px) {
     .gallery-grid {
-        max-width: 800px;
+        min-height: 480px;
     }
     .gallery-item {
-        width: 180px;
-        height: 180px;
+        height: 200px;
     }
 }
 
 @media (max-width: 768px) {
     .gallery-grid {
-        max-width: 600px;
+        min-height: 340px;
     }
+
+    .gallery-group {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 0.5rem;
+        padding: 0.25rem;
+    }
+
     .gallery-item {
-        width: 140px;
-        height: 140px;
-    }
-    section.gallery {
-        padding: 0.5rem;
+        height: 150px;
     }
 }
 
@@ -563,8 +611,9 @@ button {
 
     .gallery-container {
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(4, 1fr);
+        grid-template-rows: repeat(2, 1fr);
         gap: 0.5rem;
+        padding: 0.25rem;
     }
 
     .gallery-item {
@@ -573,8 +622,9 @@ button {
     }
 
     .gallery-controls {
-        left: -10px;
-        right: -10px;
+        left: 0;
+        right: 0;
+        padding: 0 0.5rem;
     }
 
     .gallery-btn {
@@ -656,4 +706,28 @@ button {
     .counter-box:hover {
         transform: none;
     }
+}
+
+/* Touch Events para Galeria */
+@media (hover: none) {
+    .gallery-grid {
+        cursor: grab;
+    }
+
+    .gallery-grid:active {
+        cursor: grabbing;
+    }
+
+    .gallery-container {
+        will-change: transform;
+    }
+
+    .gallery-item:active {
+        transform: scale(0.98);
+    }
+}
+
+.gallery-item.empty {
+    background: rgba(0, 0, 0, 0.05);
+    border: 2px dashed rgba(233, 30, 99, 0.2);
 } 
