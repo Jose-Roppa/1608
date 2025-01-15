@@ -208,13 +208,7 @@ function updateNavigationButtons(currentIndex, totalGroups) {
 
 // Função para criar elementos da galeria
 function getItemsPerGroup() {
-    if (window.innerWidth <= 600) {
-        return 8; // 2x4 grid no mobile pequeno
-    } else if (window.innerWidth <= 900) {
-        return 9; // 3x3 grid no tablet
-    } else {
-        return 8; // 4x2 grid no desktop
-    }
+    return 8; // Mantém 4x2 grid em todos os dispositivos
 }
 
 function createGalleryItems() {
